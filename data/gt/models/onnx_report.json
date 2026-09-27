@@ -1,0 +1,9 @@
+{
+  "deploy_mae_test": 51.534657610744006,
+  "onnx_max_abs_diff": 0.00016851134560624814,
+  "native_batch353_ms": 4.983080015517771,
+  "onnx_batch353_ms": 4.714899999089539,
+  "native_single_ms": 4.9114379996899515,
+  "onnx_single_ms": 0.6342120002955198,
+  "batch_speedup": 1.06
+}

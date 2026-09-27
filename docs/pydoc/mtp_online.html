@@ -1,0 +1,131 @@
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="mtp.html" class="white">mtp</a>.online</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Chackathon%5Cmoscow-transport-predict%5Csrc%5Cmtp%5Conline.py">c:\hackathon\moscow-transport-predict\src\mtp\online.py</a></td></tr></table>
+    <p><span class="code">Online&nbsp;prediction&nbsp;pipeline:&nbsp;stream&nbsp;state,&nbsp;feature&nbsp;computation,&nbsp;model&nbsp;inference.<br>
+&nbsp;<br>
+Mirrors&nbsp;the&nbsp;offline&nbsp;feature&nbsp;definitions&nbsp;(tools/gt_features.py)&nbsp;using&nbsp;only&nbsp;data<br>
+available&nbsp;at&nbsp;prediction&nbsp;time,&nbsp;per&nbsp;the&nbsp;anti-leak&nbsp;rule.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="math.html">math</a><br>
+</td><td class="multicolumn"><a href="numpy.html">numpy</a><br>
+</td><td class="multicolumn"><a href="pandas.html">pandas</a><br>
+</td><td class="multicolumn"><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="mtp.online.html#OnlinePipeline">OnlinePipeline</a>
+</dt><dt class="heading-text"><a href="mtp.online.html#VehicleState">VehicleState</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="OnlinePipeline">class <strong>OnlinePipeline</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#OnlinePipeline">OnlinePipeline</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;schedule_path:&nbsp;'str',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model_path:&nbsp;'str',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;meta_path:&nbsp;'str&nbsp;|&nbsp;None'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;priors_path:&nbsp;'str&nbsp;|&nbsp;None'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;use_hmm_matching:&nbsp;'bool'&nbsp;=&nbsp;False,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hmm_roads_path:&nbsp;'str&nbsp;|&nbsp;None'&nbsp;=&nbsp;None<br>
+)<br>
+&nbsp;<br>
+<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="OnlinePipeline-__init__"><strong>__init__</strong></a>(
+    self,
+    schedule_path: 'str',
+    model_path: 'str',
+    meta_path: 'str | None' = None,
+    priors_path: 'str | None' = None,
+    use_hmm_matching: 'bool' = False,
+    hmm_roads_path: 'str | None' = None
+)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="OnlinePipeline-add_record"><strong>add_record</strong></a>(
+    self,
+    tr_id: 'int',
+    ts: 'float',
+    lat: 'float',
+    lon: 'float',
+    valid: 'bool',
+    speed: 'float',
+    heading: 'float',
+    altitude: 'float' = 0.0
+) -&gt; 'None'</dt></dl>
+
+<dl><dt><a name="OnlinePipeline-alerts"><strong>alerts</strong></a>(self) -&gt; 'list[dict]'</dt></dl>
+
+<dl><dt><a name="OnlinePipeline-predict_vehicle"><strong>predict_vehicle</strong></a>(self, tr_id: 'int', now_s: 'float') -&gt; 'dict | None'</dt></dl>
+
+<dl><dt><a name="OnlinePipeline-tick"><strong>tick</strong></a>(self) -&gt; 'list[dict]'</dt></dl>
+
+<dl><dt><a name="OnlinePipeline-whatif"><strong>whatif</strong></a>(self, extra_vehicles: 'int' = 0, dwell_reduction_s: 'float' = 0.0) -&gt; 'dict'</dt><dd><span class="code">Scenario&nbsp;layer&nbsp;on&nbsp;top&nbsp;of&nbsp;ML&nbsp;predictions.<br>
+&nbsp;<br>
+extra_vehicles:&nbsp;additional&nbsp;vehicles&nbsp;dispatched&nbsp;on&nbsp;the&nbsp;line&nbsp;-&gt;&nbsp;interval<br>
+shrinks&nbsp;by&nbsp;N/(N+K),&nbsp;which&nbsp;reduces&nbsp;the&nbsp;bunching&nbsp;share&nbsp;of&nbsp;predicted&nbsp;delay.<br>
+dwell_reduction_s:&nbsp;seconds&nbsp;saved&nbsp;per&nbsp;remaining&nbsp;stop&nbsp;before&nbsp;the&nbsp;target.</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="VehicleState">class <strong>VehicleState</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor"><span class="code">&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="VehicleState-__init__"><strong>__init__</strong></a>(self)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>records</strong></dt>
+</dl>
+<dl><dt><strong>total</strong></dt>
+</dl>
+<dl><dt><strong>valid</strong></dt>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>ACTIVE_S</strong> = 180<br>
+<strong>CENTER_MAX_M</strong> = 40000.0<br>
+<strong>HMM_PER_TICK</strong> = 3<br>
+<strong>HORIZON_HI_S</strong> = 900<br>
+<strong>HORIZON_LO_S</strong> = 600<br>
+<strong>JUMP_MIN_M</strong> = 800.0<br>
+<strong>JUMP_VMAX_MPS</strong> = 50.0<br>
+<strong>MATCH_RADIUS_M</strong> = 90.0<br>
+<strong>MATCH_WINDOW_S</strong> = 300.0<br>
+<strong>PLAN_LEAD_S</strong> = 30.0<br>
+<strong>STAY_MAX_M</strong> = 5000.0<br>
+<strong>WHATIF_BUNCHING_SHARE</strong> = 0.35<br>
+<strong>WHATIF_MIN_FLEET</strong> = 1.0<br>
+<strong>WINDOW_S</strong> = 600</td></tr></table>

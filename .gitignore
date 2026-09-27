@@ -1,0 +1,24 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+dist/
+build/
+*.egg-info/
+.DS_Store
+
+# датасет организаторов (скачивается отдельно, ~500 МБ)
+ИТОГОВЫЕ_ТРЕБОВАНИЯ/
+
+# тяжёлые кэши и промежуточные артефакты (регенерируются tools/*)
+data/raw/
+data/models/
+data/schedules/
+data/osm/roads_*.json
+data/osm/roads_*.compact.npz
+data/gt/features_*.parquet
+data/gt/submission.csv
+
+# локальная конфигурация окружения
+.kilo/

@@ -1,0 +1,318 @@
+:root {
+  --bg: #10161f;
+  --panel: #161e2a;
+  --text: #dfe7f1;
+  --muted: #8aa0b8;
+  --accent: #4aa3ff;
+}
+
+* { box-sizing: border-box; }
+
+#errbox {
+  position: fixed;
+  left: 8px;
+  bottom: 8px;
+  z-index: 9999;
+  max-width: 60%;
+  font: 10px/1.4 Consolas, monospace;
+  color: #ffb0b0;
+  background: rgba(20, 10, 10, 0.85);
+  padding: 4px 8px;
+  border-radius: 4px;
+  pointer-events: none;
+  white-space: normal;
+}
+
+body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
+
+body.no-map #panel { width: 100%; max-width: none; border-left: none; }
+
+#map { flex: 1; height: 100vh; }
+
+#panel {
+  width: 380px;
+  background: var(--panel);
+  border-left: 1px solid #263244;
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  gap: 10px;
+  overflow: hidden;
+}
+
+#panel > * { flex: 0 0 auto; min-height: 0; }
+
+header h1 { font-size: 17px; margin: 0 0 4px; }
+
+#status { font-size: 12px; color: var(--muted); }
+
+#legend { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+
+.colhead {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid #263244;
+  padding-bottom: 6px;
+}
+
+#list, #alerts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+}
+
+#alerts { flex: 0 1 auto; max-height: 26%; }
+
+#list { flex: 1 1 0; min-height: 140px; }
+
+#whatif { flex: 0 1 auto; max-height: 30%; overflow-y: auto; }
+
+#list li, #alerts li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 6px;
+  border-bottom: 1px solid #1d2836;
+  cursor: default;
+}
+
+#list li:hover, #alerts li:hover { background: #1b2634; }
+
+#list .vid { font-weight: 600; }
+#list .route { color: var(--accent); font-size: 12px; }
+#list .pred { font-weight: 700; text-align: right; }
+#list .pred small { display: block; font-weight: 400; color: var(--muted); font-size: 10px; }
+
+li.incident { display: block; cursor: pointer; }
+li.empty { color: var(--muted); font-size: 12px; padding: 8px 4px; }
+
+.badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  color: #0b1017;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.cause { color: var(--muted); font-size: 11px; }
+
+.rec { color: #7fd18a; font-size: 11px; }
+
+#whatif { display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+#whatif label { display: flex; flex-direction: column; gap: 2px; color: var(--muted); }
+#whatif input[type="range"] { width: 100%; accent-color: var(--accent); }
+#whatifSummary { color: var(--text); font-size: 11px; }
+#whatifList li { padding: 6px 4px; }
+#whatifList .pred small { display: block; color: var(--muted); font-weight: 400; font-size: 10px; }
+
+footer { font-size: 11px; color: var(--muted); border-top: 1px solid #263244; padding-top: 8px; }
+
+/* --- popup карточки ТС: светлая подложка, контрастный текст --- */
+.maplibregl-popup { z-index: 1000; }
+
+.maplibregl-popup-content {
+  background: #f7fafc;
+  color: #16202c;
+  font: 12px/1.55 "Segoe UI", system-ui, sans-serif;
+  padding: 10px 12px;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  min-width: 190px;
+}
+
+.maplibregl-popup-close-button {
+  color: #33506b;
+  font-size: 15px;
+  padding: 2px 7px;
+}
+
+.maplibregl-popup-close-button:hover {
+  background: #e2e9f2;
+  color: #101820;
+  border-radius: 4px;
+}
+
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip { border-top-color: #f7fafc; }
+.maplibregl-popup-anchor-top .maplibregl-popup-tip { border-bottom-color: #f7fafc; }
+.maplibregl-popup-anchor-left .maplibregl-popup-tip { border-right-color: #f7fafc; }
+.maplibregl-popup-anchor-right .maplibregl-popup-tip { border-left-color: #f7fafc; }
+
+.pp-t { font-weight: 700; font-size: 13px; margin-bottom: 4px; color: #0b1017; }
+.pp-r { display: flex; justify-content: space-between; gap: 14px; padding: 1px 0; }
+.pp-r span { color: #5a6b7e; }
+.pp-r b { color: #101820; font-weight: 600; text-align: right; }
+.pp-stuck { margin-top: 5px; color: #a3341f; font-size: 11px; font-weight: 700; }
+
+/* --- маркеры-стрелки ТС --- */
+.veh-marker { cursor: pointer; }
+
+.veh-marker-rot {
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  will-change: transform;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.65));
+}
+
+.stuckline { color: #e8a13c; font-size: 11px; }
+
+/* --- кнопка чата в попапе ТС --- */
+.pp-chat {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: #2f6fce;
+  color: #fff;
+  font: 600 12px "Segoe UI", system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.pp-chat:hover { background: #3d80e0; }
+
+/* --- мок-чат диспетчера с водителем --- */
+#chat {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: 320px;
+  max-height: 480px;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid #263244;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  overflow: hidden;
+}
+
+#chat.hidden { display: none; }
+
+#chat header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #263244;
+}
+
+#chatTitle { font-size: 13px; }
+
+.chat-sub { display: block; font-size: 11px; color: var(--muted); }
+
+#chatClose {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+#chatClose:hover { color: var(--text); }
+
+#chatMsgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 120px;
+}
+
+.msg {
+  max-width: 82%;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.msg time { display: block; font-size: 9px; opacity: 0.65; margin-top: 2px; }
+
+.msg.disp { align-self: flex-end; background: #2f6fce; color: #fff; border-bottom-right-radius: 3px; }
+.msg.drv { align-self: flex-start; background: #232e3d; color: var(--text); border-bottom-left-radius: 3px; }
+
+#chatForm {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px 4px;
+}
+
+#chatInput {
+  flex: 1;
+  background: #0e141d;
+  border: 1px solid #263244;
+  border-radius: 6px;
+  color: var(--text);
+  font: 12px "Segoe UI", system-ui, sans-serif;
+  padding: 7px 9px;
+  outline: none;
+}
+
+#chatInput:focus { border-color: var(--accent); }
+
+#chatForm button {
+  background: #2f6fce;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 12px;
+  font: 600 12px "Segoe UI", system-ui, sans-serif;
+  cursor: pointer;
+}
+
+#chatForm button:hover { background: #3d80e0; }
+
+#chatHint {
+  padding: 4px 12px 8px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+#ribbon {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1400;
+  text-align: center;
+  padding: 5px 12px;
+  background: rgba(10, 15, 20, 0.82);
+  border-bottom: 1px solid #263244;
+  color: #cfd8e3;
+  font: 600 12px "Segoe UI", system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+#mapHint {
+  position: fixed;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1500;
+  background: rgba(16, 22, 31, 0.92);
+  border: 1px solid #263244;
+  color: #e8a13c;
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+#mapHint.hidden { display: none; }

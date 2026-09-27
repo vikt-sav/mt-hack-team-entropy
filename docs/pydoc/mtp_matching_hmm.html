@@ -1,0 +1,232 @@
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="mtp.html" class="white">mtp</a>.<a href="mtp.matching.html" class="white">matching</a>.hmm</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Chackathon%5Cmoscow-transport-predict%5Csrc%5Cmtp%5Cmatching%5Chmm.py">c:\hackathon\moscow-transport-predict\src\mtp\matching\hmm.py</a></td></tr></table>
+    <p><span class="code">Stage&nbsp;2&nbsp;map&nbsp;matching:&nbsp;HMM&nbsp;matching&nbsp;of&nbsp;vehicle&nbsp;telemetry&nbsp;onto&nbsp;OSM&nbsp;streets.<br>
+&nbsp;<br>
+Snap&nbsp;GPS&nbsp;tracks&nbsp;to&nbsp;the&nbsp;drivable&nbsp;road&nbsp;graph&nbsp;(leuvenmapmatching,&nbsp;HMM&nbsp;over&nbsp;edges)<br>
+and&nbsp;use&nbsp;the&nbsp;snapped&nbsp;track&nbsp;to:<br>
+&nbsp;<br>
+*&nbsp;refine&nbsp;stop-pass&nbsp;delay&nbsp;estimates&nbsp;for&nbsp;recently&nbsp;passed&nbsp;stops&nbsp;-&gt;&nbsp;cleaner<br>
+&nbsp;&nbsp;``est_dev_*``&nbsp;features&nbsp;than&nbsp;raw&nbsp;radius&nbsp;matching&nbsp;alone;<br>
+*&nbsp;detect&nbsp;the&nbsp;street&nbsp;segment&nbsp;where&nbsp;a&nbsp;vehicle&nbsp;is&nbsp;stuck&nbsp;("участок&nbsp;застревания")<br>
+&nbsp;&nbsp;for&nbsp;the&nbsp;incident&nbsp;card&nbsp;on&nbsp;the&nbsp;dashboard.<br>
+&nbsp;<br>
+The&nbsp;road&nbsp;graph&nbsp;is&nbsp;loaded&nbsp;from&nbsp;the&nbsp;Overpass&nbsp;cache&nbsp;(``data/osm/roads_*.json``)<br>
+once&nbsp;into&nbsp;compact&nbsp;numpy&nbsp;arrays;&nbsp;a&nbsp;binary&nbsp;``.compact.npz``&nbsp;cache&nbsp;is&nbsp;written&nbsp;next<br>
+to&nbsp;the&nbsp;JSON&nbsp;so&nbsp;subsequent&nbsp;startups&nbsp;skip&nbsp;the&nbsp;heavy&nbsp;JSON&nbsp;parse.&nbsp;Matching&nbsp;runs&nbsp;on<br>
+a&nbsp;small&nbsp;sub-map&nbsp;cropped&nbsp;around&nbsp;the&nbsp;recent&nbsp;track,&nbsp;so&nbsp;the&nbsp;per-vehicle&nbsp;cost&nbsp;stays<br>
+in&nbsp;the&nbsp;tens-to-hundreds&nbsp;of&nbsp;milliseconds&nbsp;and&nbsp;is&nbsp;amortized&nbsp;across&nbsp;ticks.<br>
+&nbsp;<br>
+Everything&nbsp;here&nbsp;is&nbsp;best-effort:&nbsp;any&nbsp;failure&nbsp;(missing&nbsp;cache,&nbsp;no&nbsp;path,&nbsp;too&nbsp;few<br>
+points)&nbsp;degrades&nbsp;silently&nbsp;to&nbsp;the&nbsp;plain&nbsp;radius&nbsp;matching&nbsp;of&nbsp;the&nbsp;online&nbsp;pipeline.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="json.html">json</a><br>
+<a href="logging.html">logging</a><br>
+</td><td class="multicolumn"><a href="math.html">math</a><br>
+<a href="numpy.html">numpy</a><br>
+</td><td class="multicolumn"><a href="time.html">time</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="mtp.matching.hmm.html#HMMTrackMatcher">HMMTrackMatcher</a>
+</dt><dt class="heading-text"><a href="mtp.matching.hmm.html#RoadGraphIndex">RoadGraphIndex</a>
+</dt><dt class="heading-text"><a href="mtp.matching.hmm.html#SnappedTrack">SnappedTrack</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="HMMTrackMatcher">class <strong>HMMTrackMatcher</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#HMMTrackMatcher">HMMTrackMatcher</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;roads_json:&nbsp;'Path&nbsp;|&nbsp;str',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;radius_m:&nbsp;'float'&nbsp;=&nbsp;90.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;window_s:&nbsp;'float'&nbsp;=&nbsp;300.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;track_window_s:&nbsp;'float'&nbsp;=&nbsp;720.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;min_dt_s:&nbsp;'float'&nbsp;=&nbsp;10.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pad_m:&nbsp;'float'&nbsp;=&nbsp;300.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;max_track_points:&nbsp;'int'&nbsp;=&nbsp;90,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;min_gap_s:&nbsp;'float'&nbsp;=&nbsp;240.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;stuck_window_s:&nbsp;'float'&nbsp;=&nbsp;900.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;stuck_min_s:&nbsp;'float'&nbsp;=&nbsp;120.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;stuck_speed_mps:&nbsp;'float'&nbsp;=&nbsp;2.5<br>
+)<br>
+&nbsp;<br>
+Snap&nbsp;per-vehicle&nbsp;tracks&nbsp;with&nbsp;HMM;&nbsp;estimate&nbsp;stop&nbsp;delays&nbsp;and&nbsp;stuck&nbsp;streets.<br>
+&nbsp;<br>
+Track&nbsp;window&nbsp;covers&nbsp;the&nbsp;recent&nbsp;history:&nbsp;enough&nbsp;for&nbsp;the&nbsp;±window_s&nbsp;bands&nbsp;of<br>
+recently&nbsp;due&nbsp;stops&nbsp;and&nbsp;for&nbsp;stuck&nbsp;detection.&nbsp;Older&nbsp;stops&nbsp;keep&nbsp;the&nbsp;plain<br>
+radius-matching&nbsp;estimates&nbsp;(feature&nbsp;distribution&nbsp;stays&nbsp;close&nbsp;to&nbsp;training).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="HMMTrackMatcher-__init__"><strong>__init__</strong></a>(
+    self,
+    roads_json: 'Path | str',
+    radius_m: 'float' = 90.0,
+    window_s: 'float' = 300.0,
+    track_window_s: 'float' = 720.0,
+    min_dt_s: 'float' = 10.0,
+    pad_m: 'float' = 300.0,
+    max_track_points: 'int' = 90,
+    min_gap_s: 'float' = 240.0,
+    stuck_window_s: 'float' = 900.0,
+    stuck_min_s: 'float' = 120.0,
+    stuck_speed_mps: 'float' = 2.5
+)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="HMMTrackMatcher-snap_track"><strong>snap_track</strong></a>(
+    self,
+    tr_id: 'int',
+    ts: 'np.ndarray',
+    lat: 'np.ndarray',
+    lon: 'np.ndarray',
+    allow_compute: 'bool' = True
+)</dt><dd><span class="code">Return&nbsp;(snapped_track,&nbsp;fresh)&nbsp;or&nbsp;(None,&nbsp;False).&nbsp;Cached&nbsp;per&nbsp;vehicle.<br>
+&nbsp;<br>
+A&nbsp;fresh&nbsp;HMM&nbsp;run&nbsp;happens&nbsp;only&nbsp;when&nbsp;new&nbsp;telemetry&nbsp;arrived&nbsp;and&nbsp;at&nbsp;least<br>
+``min_gap_s``&nbsp;(or&nbsp;the&nbsp;current&nbsp;backoff&nbsp;gap)&nbsp;of&nbsp;stream&nbsp;time&nbsp;passed&nbsp;since<br>
+the&nbsp;last&nbsp;attempt;&nbsp;otherwise&nbsp;the&nbsp;cached&nbsp;track&nbsp;is&nbsp;reused&nbsp;as-is.</span></dd></dl>
+
+<dl><dt><a name="HMMTrackMatcher-stop_delays"><strong>stop_delays</strong></a>(
+    self,
+    snapped: 'SnappedTrack',
+    stop_ids: 'np.ndarray',
+    stop_plan_s: 'np.ndarray',
+    stop_lat: 'np.ndarray',
+    stop_lon: 'np.ndarray'
+) -&gt; 'dict[int, float]'</dt><dd><span class="code">tt_action_item_id&nbsp;-&gt;&nbsp;delay&nbsp;estimate&nbsp;from&nbsp;the&nbsp;snapped&nbsp;track.<br>
+&nbsp;<br>
+Mirrors&nbsp;and&nbsp;refines&nbsp;reconstruct_stop_matches&nbsp;semantics:&nbsp;within<br>
+radius/window&nbsp;of&nbsp;the&nbsp;planned&nbsp;arrival&nbsp;take&nbsp;the&nbsp;pass&nbsp;time&nbsp;closest&nbsp;to&nbsp;the<br>
+plan.&nbsp;Because&nbsp;the&nbsp;snapped&nbsp;track&nbsp;is&nbsp;decimated,&nbsp;the&nbsp;pass&nbsp;time&nbsp;is&nbsp;also<br>
+interpolated&nbsp;where&nbsp;the&nbsp;track&nbsp;segment&nbsp;crosses&nbsp;the&nbsp;stop's&nbsp;neighbourhood,<br>
+which&nbsp;recovers&nbsp;sub-sampling&nbsp;time&nbsp;resolution.</span></dd></dl>
+
+<dl><dt><a name="HMMTrackMatcher-stuck_street"><strong>stuck_street</strong></a>(self, snapped: 'SnappedTrack', now_s: 'float')</dt><dd><span class="code">(street_name,&nbsp;stuck_seconds)&nbsp;for&nbsp;the&nbsp;longest&nbsp;low-speed&nbsp;run,&nbsp;or&nbsp;None.</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="RoadGraphIndex">class <strong>RoadGraphIndex</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#RoadGraphIndex">RoadGraphIndex</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;node_ids:&nbsp;'np.ndarray',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;coords:&nbsp;'np.ndarray',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;edges:&nbsp;'np.ndarray',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;way_nodes:&nbsp;'np.ndarray',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;way_ptr:&nbsp;'np.ndarray',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;way_names:&nbsp;'np.ndarray'<br>
+)<br>
+&nbsp;<br>
+Compact&nbsp;OSM&nbsp;road&nbsp;graph:&nbsp;node&nbsp;coords,&nbsp;edges,&nbsp;street&nbsp;names&nbsp;of&nbsp;nodes.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="RoadGraphIndex-__init__"><strong>__init__</strong></a>(
+    self,
+    node_ids: 'np.ndarray',
+    coords: 'np.ndarray',
+    edges: 'np.ndarray',
+    way_nodes: 'np.ndarray',
+    way_ptr: 'np.ndarray',
+    way_names: 'np.ndarray'
+)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="RoadGraphIndex-nearest_named_street"><strong>nearest_named_street</strong></a>(self, lat: 'float', lon: 'float', max_m: 'float' = 150.0) -&gt; 'str | None'</dt></dl>
+
+<dl><dt><a name="RoadGraphIndex-save"><strong>save</strong></a>(self, path: 'Path') -&gt; 'None'</dt></dl>
+
+<dl><dt><a name="RoadGraphIndex-sub_graph"><strong>sub_graph</strong></a>(self, latlons: 'np.ndarray', pad_m: 'float' = 300.0)</dt><dd><span class="code">Nodes/edges&nbsp;around&nbsp;the&nbsp;given&nbsp;points&nbsp;(corridor&nbsp;of&nbsp;width&nbsp;~2*pad_m).</span></dd></dl>
+
+<hr>
+Class methods defined here:<br>
+<dl><dt><a name="RoadGraphIndex-from_overpass"><strong>from_overpass</strong></a>(data: 'dict') -&gt; "'RoadGraphIndex'"</dt></dl>
+
+<dl><dt><a name="RoadGraphIndex-load"><strong>load</strong></a>(roads_json: 'Path | str') -&gt; "'RoadGraphIndex'"</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="SnappedTrack">class <strong>SnappedTrack</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#SnappedTrack">SnappedTrack</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ts:&nbsp;'list[float]',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lat:&nbsp;'list[float]',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lon:&nbsp;'list[float]',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;src_ts:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;raw_lat:&nbsp;'float&nbsp;|&nbsp;None'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;raw_lon:&nbsp;'float&nbsp;|&nbsp;None'&nbsp;=&nbsp;None<br>
+)<br>
+&nbsp;<br>
+<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="SnappedTrack-__init__"><strong>__init__</strong></a>(
+    self,
+    ts: 'list[float]',
+    lat: 'list[float]',
+    lon: 'list[float]',
+    src_ts: 'float',
+    raw_lat: 'float | None' = None,
+    raw_lon: 'float | None' = None
+)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="SnappedTrack-__len__"><strong>__len__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="SnappedTrack-as_array"><strong>as_array</strong></a>(self) -&gt; 'np.ndarray'</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>lat</strong></dt>
+</dl>
+<dl><dt><strong>lon</strong></dt>
+</dl>
+<dl><dt><strong>raw_lat</strong></dt>
+</dl>
+<dl><dt><strong>raw_lon</strong></dt>
+</dl>
+<dl><dt><strong>src_ts</strong></dt>
+</dl>
+<dl><dt><strong>ts</strong></dt>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-default_roads_path"><strong>default_roads_path</strong></a>(root: 'Path | None' = None) -&gt; 'Path | None'</dt></dl>
+</td></tr></table>

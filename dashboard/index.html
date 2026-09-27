@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Хакатон Московского транспорта · Команда «Энтропия» — предиктор задержек</title>
+  <link rel="stylesheet" href="/dashboard/vendor/maplibre-gl.css" />
+  <link rel="stylesheet" href="/dashboard/style.css?v=10" />
+  <script>
+    window.onerror = function (msg, src, line) {
+      var el = document.getElementById("status");
+      if (el) el.textContent = "ОШИБКА СКРИПТА: " + msg + " (" + (src || "?").split("/").pop() + ":" + line + ")";
+    };
+  </script>
+  <script>
+    window.__errs = [];
+    window.onerror = function (msg, src, line, col, err) {
+      var stamp = new Date().toLocaleTimeString();
+      var stack = (err && err.stack ? err.stack.split("\n").slice(1, 3).join(" <- ") : "");
+      window.__errs.push(stamp + " " + msg + " @ " + stack.slice(0, 220));
+      if (window.__errs.length > 3) window.__errs.shift();
+      var box = document.getElementById("errbox");
+      if (box) box.textContent = "ошибки: " + window.__errs.join("  ||  ");
+      return false;
+    };
+  </script>
+</head>
+<body>
+  <div id="ribbon">Хакатон Московского транспорта&ensp;|&ensp;Команда «Энтропия»</div>
+  <div id="errbox"></div>
+  <div id="map"></div>
+  <div id="mapHint" class="hidden">подложка карты недоступна (CDN заблокирован) — показаны маршруты, остановки и ТС</div>
+  <aside id="panel">
+    <header>
+      <h1>Предиктор задержек · диспетчер</h1>
+      <div id="status">подключение…</div>
+    </header>
+    <div id="legend">
+      <span class="dot" style="background:#2ecc71"></span>&lt;0.5 мин
+      <span class="dot" style="background:#f1c40f"></span>0.5–2 мин
+      <span class="dot" style="background:#e67e22"></span>2–5 мин
+      <span class="dot" style="background:#e74c3c"></span>&gt;5 мин
+    </div>
+    <div class="colhead"><span>Инциденты: прогноз на T+10…15 мин</span></div>
+    <ol id="alerts"></ol>
+    <div class="colhead"><span>Все ТС под наблюдением</span><span>прогноз</span></div>
+    <ol id="list"></ol>
+    <div class="colhead"><span>What-if: упреждающие меры</span></div>
+    <div id="whatif">
+      <label>Резервные ТС на линии: <b id="kVal">0</b>
+        <input type="range" id="kSlider" min="0" max="5" step="1" value="0" />
+      </label>
+      <label>Сокращение стоянки: <b id="dVal">0 с</b>
+        <input type="range" id="dSlider" min="0" max="60" step="5" value="0" />
+      </label>
+      <div id="whatifSummary" class="cause"></div>
+      <ol id="whatifList"></ol>
+    </div>
+    <footer id="stats"></footer>
+  </aside>
+  <div id="chat" class="hidden">
+    <header>
+      <div>
+        <b id="chatTitle">Чат с водителем</b>
+        <span id="chatSub" class="chat-sub"></span>
+      </div>
+      <button id="chatClose" title="Закрыть">×</button>
+    </header>
+    <div id="chatMsgs"></div>
+    <form id="chatForm" autocomplete="off">
+      <input id="chatInput" placeholder="Сообщение водителю…" maxlength="300" />
+      <button type="submit">Отправить</button>
+    </form>
+    <div id="chatHint">демо-канал: сообщения остаются в браузере</div>
+  </div>
+  <script src="/dashboard/vendor/maplibre-gl.js"></script>
+  <script src="/dashboard/main.js?v=10"></script>
+  <script>
+    window.onerror = function (msg, src, line) {
+      var el = document.getElementById("status");
+      if (el) el.textContent = "ОШИБКА СКРИПТА: " + msg + " (" + (src || "?").split("/").pop() + ":" + line + ")";
+    };
+  </script>
+</body>
+</html>

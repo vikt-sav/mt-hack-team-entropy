@@ -1,0 +1,44 @@
+services:
+  ml-core:
+    build: .
+    container_name: pred-ml
+    ports:
+      - "9201:9201"
+      - "8100:8100"
+    volumes:
+      - ./data:/app/data
+      - ./ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset:/app/dataset:ro
+    environment:
+      - DATA_DIR=/app/dataset/validate
+      - MTP_HMM_MATCHING=1
+    command: python -m mtp.api.main --mode ml --host 0.0.0.0 --ml-port 8100
+    restart: unless-stopped
+
+  backend:
+    build: .
+    container_name: pred-backend
+    depends_on:
+      - ml-core
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset:/app/dataset:ro
+    environment:
+      - ML_URL=http://ml-core:8100
+      - DATA_DIR=/app/dataset/validate
+    command: python -m mtp.api.main --mode backend --host 0.0.0.0 --port 8000
+    restart: unless-stopped
+
+  replay:
+    build: .
+    depends_on:
+      - ml-core
+    volumes:
+      - ./ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset:/app/dataset:ro
+    command: >
+      python tools/replay_stream.py
+      --traffic /app/dataset/validate/traffic.csv
+      --host ml-core --port 9201
+      --speed ${REPLAY_SPEED:-30} --start-offset 26400 --duration 14400 --loop
+    restart: "no"

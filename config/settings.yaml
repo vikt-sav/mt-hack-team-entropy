@@ -1,0 +1,41 @@
+ingest:
+  transport: udp
+  mode: json
+  listen_host: 127.0.0.1
+  listen_port: 20660
+  record_dir: data/raw
+
+schedule:
+  path: data/schedules/schedule.csv
+  columns:
+    route_id: route_id
+    direction_id: direction_id
+    trip_id: trip_id
+    stop_seq: stop_seq
+    stop_id: stop_id
+    stop_name: stop_name
+    lat: lat
+    lon: lon
+    arrive_time: arrive_time
+
+target:
+  horizon_s: 720
+  grid_s: 30
+  delay_clip_min_s: -1800
+  delay_clip_max_s: 3600
+  max_lateral_offset_m: 150
+
+model:
+  iterations: 600
+  depth: 6
+  learning_rate: 0.06
+  quantiles: [0.1, 0.9]
+
+inference:
+  interval_s: 20
+  active_window_s: 120
+
+api:
+  host: 0.0.0.0
+  port: 8000
+  ws_interval_s: 2

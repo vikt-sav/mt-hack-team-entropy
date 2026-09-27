@@ -1,0 +1,40 @@
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="mtp.html" class="white">mtp</a>.gt_priors</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Chackathon%5Cmoscow-transport-predict%5Csrc%5Cmtp%5Cgt_priors.py">c:\hackathon\moscow-transport-predict\src\mtp\gt_priors.py</a></td></tr></table>
+    <p><span class="code">Builds&nbsp;per-physical-stop&nbsp;delay&nbsp;priors&nbsp;from&nbsp;schedule&nbsp;facts.<br>
+&nbsp;<br>
+Stops&nbsp;are&nbsp;keyed&nbsp;by&nbsp;rounded&nbsp;coordinates&nbsp;because&nbsp;tt_action_item_id&nbsp;is&nbsp;unique<br>
+per&nbsp;planned&nbsp;arrival.&nbsp;Leave-one-vehicle-out&nbsp;variant&nbsp;for&nbsp;labeled&nbsp;rows.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="numpy.html">numpy</a><br>
+</td><td class="multicolumn"><a href="pandas.html">pandas</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-add_stop_key"><strong>add_stop_key</strong></a>(df: 'pd.DataFrame') -&gt; 'pd.DataFrame'</dt></dl>
+ <dl><dt><a name="-attach_priors"><strong>attach_priors</strong></a>(
+    points: 'pd.DataFrame',
+    priors: 'pd.DataFrame',
+    target_col: 'str | None' = None
+) -&gt; 'pd.DataFrame'</dt><dd><span class="code">Adds&nbsp;prior&nbsp;features&nbsp;keyed&nbsp;by&nbsp;physical&nbsp;stop.<br>
+&nbsp;<br>
+Labeled&nbsp;rows&nbsp;(target_col&nbsp;given)&nbsp;get&nbsp;LOO&nbsp;values:&nbsp;own&nbsp;fact&nbsp;removed&nbsp;from&nbsp;the<br>
+aggregate&nbsp;so&nbsp;the&nbsp;label&nbsp;never&nbsp;leaks&nbsp;into&nbsp;features.</span></dd></dl>
+ <dl><dt><a name="-build_stop_priors"><strong>build_stop_priors</strong></a>(schedule: 'pd.DataFrame') -&gt; 'pd.DataFrame'</dt></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>COORD_DP</strong> = 5</td></tr></table>

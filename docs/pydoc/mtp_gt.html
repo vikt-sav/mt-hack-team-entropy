@@ -1,0 +1,39 @@
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="mtp.html" class="white">mtp</a>.gt</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Chackathon%5Cmoscow-transport-predict%5Csrc%5Cmtp%5Cgt.py">c:\hackathon\moscow-transport-predict\src\mtp\gt.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="numpy.html">numpy</a><br>
+</td><td class="multicolumn"><a href="pandas.html">pandas</a><br>
+</td><td class="multicolumn"><a href="re.html">re</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-haversine_m"><strong>haversine_m</strong></a>(lat1, lon1, lat2, lon2) -&gt; 'np.ndarray'</dt></dl>
+ <dl><dt><a name="-load_points"><strong>load_points</strong></a>(path: 'Path | str') -&gt; 'pd.DataFrame'</dt></dl>
+ <dl><dt><a name="-load_schedule"><strong>load_schedule</strong></a>(path: 'Path | str') -&gt; 'pd.DataFrame'</dt></dl>
+ <dl><dt><a name="-load_traffic"><strong>load_traffic</strong></a>(path: 'Path | str') -&gt; 'pd.DataFrame'</dt></dl>
+ <dl><dt><a name="-lonlat_to_xy"><strong>lonlat_to_xy</strong></a>(lat: 'np.ndarray', lon: 'np.ndarray', lat0: 'float', lon0: 'float')</dt></dl>
+ <dl><dt><a name="-parse_geom"><strong>parse_geom</strong></a>(series: 'pd.Series') -&gt; 'pd.DataFrame'</dt></dl>
+ <dl><dt><a name="-reconstruct_stop_matches"><strong>reconstruct_stop_matches</strong></a>(
+    gps_xy: 'np.ndarray',
+    gps_t: 'np.ndarray',
+    stop_xy: 'np.ndarray',
+    stop_plan_s: 'np.ndarray',
+    stop_ids: 'np.ndarray',
+    radius_m: 'float' = 70.0,
+    window_s: 'float' = 900.0
+) -&gt; 'pd.DataFrame'</dt><dd><span class="code">Match&nbsp;GPS&nbsp;points&nbsp;to&nbsp;planned&nbsp;stop&nbsp;arrivals;&nbsp;returns&nbsp;per&nbsp;stop:&nbsp;delay&nbsp;estimate.<br>
+&nbsp;<br>
+gps_t&nbsp;/&nbsp;stop_plan_s&nbsp;are&nbsp;unix&nbsp;seconds.&nbsp;Matching&nbsp;restricted&nbsp;to&nbsp;|t&nbsp;-&nbsp;plan|&nbsp;&lt;=&nbsp;window_s.</span></dd></dl>
+</td></tr></table>
