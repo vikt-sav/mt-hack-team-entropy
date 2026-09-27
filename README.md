@@ -25,14 +25,25 @@ docker compose up --build
   уже работает, установка не требуется;
 - **Дашборд:** http://localhost:8000/dashboard/index.html
 - **Swagger:** http://localhost:8000/docs (backend), http://localhost:8100/docs (ml-core)
-- **Поток:** сервис `replay` стартует сам — исторический датасет превращается в живой
-  NDTP-поток (окно 07:20–11:20, ×30, цикл 8 минут); скорость — `REPLAY_SPEED` в
-  docker-compose. Живой эмулятор организаторов: `docker load -i
-  ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset/ndtp-telemetry-emulator.tar`, затем
-  `curl -X POST http://localhost:8080/api/start -d '{"targetHost":"host.docker.internal","targetPort":9201,"units":[{"unitId":1166336,"intervalMs":5000,"autoGenerate":true,"cells":[]}]}'`
-  — **важно:** `unitId` берите из столбца `unit_id` файла `traffic.csv` — система
-  свяжет юнит с ТС и его расписанием автоматически; время пакетов эмулятора
-  (текущее) система сама выравнивает на день расписания (06.01.2026).
+- **Поток из датасета (работает сразу):** сервис `replay` превращает исторический
+  датасет в живой NDTP-поток (окно 07:20–11:20, ×30, цикл 8 минут); скорость —
+  `REPLAY_SPEED` в docker-compose.
+
+### Подача живого NDTP-потока эмулятором организаторов
+
+Эмулятор распространяется в датасете (`ndtp-telemetry-emulator.tar`) и шлёт NDTP
+по TCP на наш приёмник (`ml-core`, порт 9201, опубликован на хост). Шаги:
+
+1. Загрузить образ: `docker load -i ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset/ndtp-telemetry-emulator.tar`
+2. Запустить контейнер с управляющим API на :8080
+3. Запустить поток: `curl -X POST http://localhost:8080/api/start -d '{"targetHost":"host.docker.internal","targetPort":9201,"units":[{"unitId":1166336,"intervalMs":5000,"autoGenerate":true,"cells":[]}]}'`
+4. Останов/статус: `POST /api/stop`, `GET /api/status`; справочник ячеек: `/api/cells`
+
+**Важно:** `unitId` указывайте из столбца `unit_id` файла `traffic.csv` — система
+свяжет юнит с ТС и его расписанием автоматически. Время пакетов эмулятора
+(текущее) система сама выравнивает на день расписания (06.01.2026), время суток
+сохраняется. Проверка приёма: новые строки в Swagger `/docs` → `GET /internal/snapshot`
+и точки на дашборде.
 - **Проверка метрик:** `python tools/stream_eval.py --split test` (MAE в потоке 42.2 с),
   `python tools/bench_latency.py` (latency инференса)
 - **Надёжность:** `docker compose stop replay` — система живёт на последних данных
@@ -116,7 +127,8 @@ WebSocket `/ws` (пуш каждые 2 с), раздача дашборда, Swa
 Три независимых модуля в Docker поднимаются одной командой; связь — только по сети
 (TCP NDTP + HTTP/WS), един состояние в ml-core. Дообучение — готовый офлайн-контур
 `tools/gt_*` (фичи → обучение → стрим-модель → ONNX); инференс масштабируется
-горизонтально (stateless-обработка потока).
+горизонтально (stateless-обработка потока). Обучение и инференс — CPU; PyTorch-контур
+(GRU) готов к CUDA при наличии GPU (в ТЗ GPU — рекомендация).
 
 Производительность (`tools/bench_latency.py`, CPU): предсказание **8.7 мс/ТС**
 (p95 13.1), полный цикл парка **88 мс** (p95 92.6) при лимите 1–2 с; очередь не
