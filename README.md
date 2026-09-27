@@ -10,7 +10,9 @@ ML-прогноз задержки за 10–15 минут до события �
 
 > ### 🟢 Живой демо-стенд открыт прямо сейчас — жмите:
 > ### [https://mt-hackathon-team-entropy.cloudpub.ru/dashboard/index.html](https://mt-hackathon-team-entropy.cloudpub.ru/dashboard/index.html)
-> Карта маршрутов, ТС-стрелки, алерты-инциденты и What-if — в реальном времени.
+> Что внутри: карта **масштабируется** (колесо/тач/двойной клик), клик по стрелке ТС —
+> карточка с прогнозом и кнопкой **чата с водителем**, клик по точке остановки — её
+> адрес, слева — панель алертов-инцидентов и What-if. Всё обновляется в реальном времени.
 > Swagger API: [https://mt-hackathon-team-entropy.cloudpub.ru/docs](https://mt-hackathon-team-entropy.cloudpub.ru/docs)
 
 ## Запуск (Docker, одна команда)
@@ -46,7 +48,12 @@ docker compose up --build
    организаторов (см. «Запуск»); второй инстанс replay с другой скоростью/окном.
 4. **Прогнозы и метрики:** `python tools/stream_eval.py --split test` — потоковый
    прогон по labels_test (MAE 42.2 с); `python tools/bench_latency.py` — latency
-   инференса; Swagger: http://localhost:8000/docs, http://localhost:8100/docs.
+   инференса; Swagger: http://localhost:8000/docs, http://localhost:8100/docs;
+   PyDoc: http://localhost:8000/pydoc/index.html (на живом стенде:
+   https://mt-hackathon-team-entropy.cloudpub.ru/pydoc/index.html).
+
+- **Документация:** PyDoc — http://localhost:8000/pydoc/index.html (или `docs/pydoc/`
+  в репозитории); Swagger: http://localhost:8000/docs, http://localhost:8100/docs
 
 ## Архитектура
 
@@ -121,13 +128,6 @@ WebSocket `/ws` (пуш каждые 2 с), раздача дашборда, Swa
    грид-поиск веса); поиск выбрал чистый CatBoost — решение принято данными;
 5. Сверх ТЗ: стрелки по курсу с плавным движением, остановки с адресами, мок-чат
    «диспетчер → водитель», GPS-гигиена телеметрии, рибон хакатона.
-
----
-
-Артефакты платформы: сабмит — `data/gt/submission_final.csv` (скор 1.0); система из
-3 модулей — этот репозиторий; инструкция для жюри — раздел выше; документация —
-Swagger и `docs/pydoc/index.html`; производительность и доп. фичи — разделы выше.
-Готовые ответы для формы «Загрузка решения» — [SUBMISSION.md](SUBMISSION.md).
 
 ## Использованные открытые библиотеки, сервисы и лицензии
 

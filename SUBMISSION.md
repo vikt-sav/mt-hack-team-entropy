@@ -44,7 +44,9 @@ https://github.com/vikt-sav/mt-hack-team-entropy/tree/main/docs/pydoc
 
 OpenAPI/Swagger: http://localhost:8000/docs (backend) и http://localhost:8100/docs
 (ml-core); на живом стенде: https://mt-hackathon-team-entropy.cloudpub.ru/docs
-PyDoc по коду (сгенерирован `tools/gen_docs.py`): `docs/pydoc/index.html` в репозитории.
+PyDoc по коду (сгенерирован `tools/gen_docs.py`) — живые страницы:
+https://mt-hackathon-team-entropy.cloudpub.ru/pydoc/index.html
+и в репозитории: `docs/pydoc/index.html`.
 
 ## 4. Описание сведений о производительности и список реализованных дополнительных возможностей
 

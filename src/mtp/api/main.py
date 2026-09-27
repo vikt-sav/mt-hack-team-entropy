@@ -36,6 +36,7 @@ def _env_flag(name: str, default: bool) -> bool:
 
 BASE = Path(os.environ.get("APP_DIR") or Path.cwd())
 DASH = BASE / "dashboard"
+PYDOC = BASE / "docs" / "pydoc"
 DATA_DEFAULT = ROOT / "ИТОГОВЫЕ_ТРЕБОВАНИЯ" / "dataset" / "validate"
 
 
@@ -266,6 +267,9 @@ def build_backend_app(ml_url: str | None) -> FastAPI:
 
     if DASH.exists():
         app.mount("/dashboard", StaticFiles(directory=str(DASH), html=True), name="dashboard")
+
+    if PYDOC.exists():
+        app.mount("/pydoc", StaticFiles(directory=str(PYDOC), html=True), name="pydoc")
 
         @app.get("/", include_in_schema=False)
         async def index():
