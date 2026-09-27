@@ -16,7 +16,7 @@ from mtp.gt import load_points, load_traffic
 
 
 def run(args) -> None:
-    base = Path("ИТОГОВЫЕ_ТРЕБОВАНИЯ") / "dataset"
+    base = Path("dataset")
     traffic = load_traffic(base / args.split / "traffic.csv")
     labels = load_points(base / "labels" / f"labels_{args.split}.csv")
     sched_name = "schedule.csv" if args.split != "validate" else "schedule_plan.csv"

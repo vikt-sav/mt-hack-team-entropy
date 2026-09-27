@@ -13,11 +13,12 @@ available&nbsp;at&nbsp;prediction&nbsp;time,&nbsp;per&nbsp;the&nbsp;anti-leak&nb
 <td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
     
 <tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="math.html">math</a><br>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="json.html">json</a><br>
+<a href="math.html">math</a><br>
 </td><td class="multicolumn"><a href="numpy.html">numpy</a><br>
-</td><td class="multicolumn"><a href="pandas.html">pandas</a><br>
+<a href="pandas.html">pandas</a><br>
 </td><td class="multicolumn"><a href="time.html">time</a><br>
-</td></tr></table></td></tr></table><p>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
 <table class="section">
 <tr class="decor index-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
@@ -74,6 +75,18 @@ available&nbsp;at&nbsp;prediction&nbsp;time,&nbsp;per&nbsp;the&nbsp;anti-leak&nb
 
 <dl><dt><a name="OnlinePipeline-alerts"><strong>alerts</strong></a>(self) -&gt; 'list[dict]'</dt></dl>
 
+<dl><dt><a name="OnlinePipeline-align_ts"><strong>align_ts</strong></a>(self, ts: 'float') -&gt; 'float'</dt><dd><span class="code">Приводит&nbsp;время&nbsp;потока&nbsp;к&nbsp;суткам&nbsp;расписания.<br>
+&nbsp;<br>
+Эмулятор&nbsp;ставит&nbsp;в&nbsp;пакеты&nbsp;текущее&nbsp;время,&nbsp;а&nbsp;расписание&nbsp;датасета&nbsp;на<br>
+06.01.2026&nbsp;—&nbsp;сдвигаем&nbsp;поток&nbsp;целыми&nbsp;сутками&nbsp;к&nbsp;дню&nbsp;расписания&nbsp;(время<br>
+суток&nbsp;сохраняется;&nbsp;день&nbsp;недели&nbsp;может&nbsp;сместиться,&nbsp;его&nbsp;вклад&nbsp;в&nbsp;фичи<br>
+незначителен).&nbsp;Поток&nbsp;из&nbsp;самого&nbsp;датасета&nbsp;проходит&nbsp;без&nbsp;сдвига.</span></dd></dl>
+
+<dl><dt><a name="OnlinePipeline-map_tr_id"><strong>map_tr_id</strong></a>(self, unit_id: 'int') -&gt; 'int'</dt><dd><span class="code">unit_id&nbsp;потока&nbsp;→&nbsp;tr_id&nbsp;расписания&nbsp;(связка&nbsp;1:1&nbsp;из&nbsp;traffic.csv).<br>
+&nbsp;<br>
+На&nbsp;потоке&nbsp;от&nbsp;организаторов&nbsp;приходят&nbsp;датасетные&nbsp;unit_id;&nbsp;в&nbsp;replay<br>
+unit_id&nbsp;уже&nbsp;равен&nbsp;tr_id&nbsp;—&nbsp;словарь&nbsp;возвращает&nbsp;его&nbsp;же.</span></dd></dl>
+
 <dl><dt><a name="OnlinePipeline-predict_vehicle"><strong>predict_vehicle</strong></a>(self, tr_id: 'int', now_s: 'float') -&gt; 'dict | None'</dt></dl>
 
 <dl><dt><a name="OnlinePipeline-tick"><strong>tick</strong></a>(self) -&gt; 'list[dict]'</dt></dl>
@@ -125,6 +138,7 @@ Data descriptors defined here:<br>
 <strong>MATCH_RADIUS_M</strong> = 90.0<br>
 <strong>MATCH_WINDOW_S</strong> = 300.0<br>
 <strong>PLAN_LEAD_S</strong> = 30.0<br>
+<strong>ROUTE_SNAP_MAX_M</strong> = 400.0<br>
 <strong>STAY_MAX_M</strong> = 5000.0<br>
 <strong>WHATIF_BUNCHING_SHARE</strong> = 0.35<br>
 <strong>WHATIF_MIN_FLEET</strong> = 1.0<br>

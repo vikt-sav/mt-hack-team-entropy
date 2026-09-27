@@ -22,7 +22,7 @@ def bbox_key(bbox) -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--schedule", default="ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset/validate/schedule_plan.csv")
+    ap.add_argument("--schedule", default="dataset/validate/schedule_plan.csv")
     ap.add_argument("--out", default="data/osm/routes_osm.geojson")
     ap.add_argument("--pad-deg", type=float, default=0.02)
     args = ap.parse_args()

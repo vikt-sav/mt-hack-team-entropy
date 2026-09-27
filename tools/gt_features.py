@@ -189,7 +189,7 @@ def build_vehicle_point_features(
 
 
 def main() -> None:
-    base = Path("ИТОГОВЫЕ_ТРЕБОВАНИЯ") / "dataset"
+    base = Path("dataset")
     out_dir = Path("data/gt")
     out_dir.mkdir(parents=True, exist_ok=True)
 

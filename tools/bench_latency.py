@@ -11,12 +11,12 @@ import pandas as pd
 from mtp.online import OnlinePipeline
 
 p = OnlinePipeline(
-    "ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset/validate/schedule_plan.csv",
+    "dataset/validate/schedule_plan.csv",
     "data/gt/models/catboost_final.cbm",
     priors_path="data/gt/stop_priors.parquet",
 )
 va = pd.read_csv(
-    "ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset/validate/traffic.csv",
+    "dataset/validate/traffic.csv",
     usecols=["tr_id", "event_time", "location_valid", "lat", "lon", "speed", "heading"],
     parse_dates=["event_time"],
     low_memory=False,

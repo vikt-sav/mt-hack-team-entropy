@@ -17,6 +17,11 @@ ML-прогноз задержки за 10–15 минут до события �
 
 ## Запуск (Docker, одна команда)
 
+0. **Датасет организаторов** (traffic/schedule/labels/points + ndtp-telemetry-emulator.tar)
+   скачивается с Yandex-диска (ссылка в ТЗ) и распаковывается в папку **`./dataset`**
+   рядом с `docker-compose.yml`. Свою локальную копию можно подставить переменной
+   `DATASET_DIR` или junction'ом.
+
 ```bash
 docker compose up --build
 ```
@@ -34,7 +39,7 @@ docker compose up --build
 Эмулятор распространяется в датасете (`ndtp-telemetry-emulator.tar`) и шлёт NDTP
 по TCP на наш приёмник (`ml-core`, порт 9201, опубликован на хост). Шаги:
 
-1. Загрузить образ: `docker load -i ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset/ndtp-telemetry-emulator.tar`
+1. Загрузить образ: `docker load -i dataset/ndtp-telemetry-emulator.tar`
 2. Запустить контейнер с управляющим API на :8080
 3. Запустить поток: `curl -X POST http://localhost:8080/api/start -d '{"targetHost":"host.docker.internal","targetPort":9201,"units":[{"unitId":1166336,"intervalMs":5000,"autoGenerate":true,"cells":[]}]}'`
 4. Останов/статус: `POST /api/stop`, `GET /api/status`; справочник ячеек: `/api/cells`

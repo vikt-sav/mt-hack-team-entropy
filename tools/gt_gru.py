@@ -85,7 +85,7 @@ class GRUPredictor(nn.Module):
 
 
 def train(args) -> None:
-    base = Path("ИТОГОВЫЕ_ТРЕБОВАНИЯ") / "dataset"
+    base = Path("dataset")
     tr_feats = pd.read_parquet("data/gt/features_train.parquet")
     te_feats = pd.read_parquet("data/gt/features_test.parquet")
     tr_traffic = load_traffic(base / "train" / "traffic.csv")
@@ -137,7 +137,7 @@ def run_model(feats: pd.DataFrame, traffic: pd.DataFrame, points: pd.DataFrame) 
 
 
 def predict(args) -> None:
-    base = Path("ИТОГОВЫЕ_ТРЕБОВАНИЯ") / "dataset"
+    base = Path("dataset")
     va_feats = pd.read_parquet("data/gt/features_validate.parquet")
     va_traffic = load_traffic(base / "validate" / "traffic.csv")
     va_points = load_points(base / "validate" / "points.csv")
@@ -164,7 +164,7 @@ def ensemble(args) -> None:
             te_feats[c] = np.nan
     cb_pred = np.clip(cb.predict(te_feats[cols]), -420, 700)
 
-    base = Path("ИТОГОВЫЕ_ТРЕБОВАНИЯ") / "dataset"
+    base = Path("dataset")
     te_traffic = load_traffic(base / "test" / "traffic.csv")
     te_points = load_points(base / "labels" / "labels_test.csv")
     nn_pred = run_model(te_feats, te_traffic, te_points)

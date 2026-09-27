@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from mtp.online import OnlinePipeline
 
-BASE = ROOT / "ИТОГОВЫЕ_ТРЕБОВАНИЯ" / "dataset"
+BASE = ROOT / "dataset"
 
 
 def make_pipeline(split: str = "validate") -> OnlinePipeline:

@@ -37,7 +37,7 @@ def _env_flag(name: str, default: bool) -> bool:
 BASE = Path(os.environ.get("APP_DIR") or Path.cwd())
 DASH = BASE / "dashboard"
 PYDOC = BASE / "docs" / "pydoc"
-DATA_DEFAULT = ROOT / "ИТОГОВЫЕ_ТРЕБОВАНИЯ" / "dataset" / "validate"
+DATA_DEFAULT = ROOT / "dataset" / "validate"
 
 
 def build_ml_app(base_dir: Path | None = None) -> FastAPI:

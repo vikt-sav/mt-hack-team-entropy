@@ -49,7 +49,7 @@ def argparse():
     p = ap_mod.ArgumentParser()
     p.add_argument("--features", default="data/gt/features_validate.parquet")
     p.add_argument("--model", default="data/gt/models/catboost_mae.cbm")
-    p.add_argument("--sample", default="ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset/sample_submission.csv")
+    p.add_argument("--sample", default="dataset/sample_submission.csv")
     p.add_argument("--out", default="data/gt/submission.csv")
     return p
 

@@ -7,7 +7,7 @@ services:
       - "8100:8100"
     volumes:
       - ./data:/app/data
-      - ./ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset:/app/dataset:ro
+      - ./dataset:/app/dataset:ro
     environment:
       - DATA_DIR=/app/dataset/validate
       - MTP_HMM_MATCHING=1
@@ -23,7 +23,7 @@ services:
       - "8000:8000"
     volumes:
       - ./data:/app/data
-      - ./ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset:/app/dataset:ro
+      - ./dataset:/app/dataset:ro
     environment:
       - ML_URL=http://ml-core:8100
       - DATA_DIR=/app/dataset/validate
@@ -35,7 +35,7 @@ services:
     depends_on:
       - ml-core
     volumes:
-      - ./ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset:/app/dataset:ro
+      - ./dataset:/app/dataset:ro
     command: >
       python tools/replay_stream.py
       --traffic /app/dataset/validate/traffic.csv

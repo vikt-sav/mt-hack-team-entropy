@@ -40,7 +40,7 @@ def estimate_series(veh_traffic, veh_sched):
 
 
 def build_stream_features(split: str) -> pd.DataFrame:
-    base = Path("ИТОГОВЫЕ_ТРЕБОВАНИЯ") / "dataset"
+    base = Path("dataset")
     traffic = load_traffic(base / split / "traffic.csv")
     sched = load_schedule(base / split / "schedule.csv")
     labels = load_points(base / "labels" / f"labels_{split}.csv")

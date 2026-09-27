@@ -107,7 +107,7 @@ async def run(args) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--traffic", default="ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset/validate/traffic.csv")
+    ap.add_argument("--traffic", default="dataset/validate/traffic.csv")
     ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--port", type=int, default=9201)
     ap.add_argument("--speed", type=float, default=600.0)
