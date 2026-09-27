@@ -9,14 +9,17 @@
 ```
 https://github.com/vikt-sav/mt-hack-team-entropy
 ```
-
 Запуск: `docker compose up --build` (README, раздел «Запуск»). Дашборд:
 http://localhost:8000/dashboard/index.html — карта маршрутной сети (нитки по улицам
 OSM, остановки), ТС-стрелки по курсу с цветовым риском (зелёный/жёлтый/красный),
 панель алертов-инцидентов (прогноз опоздания, причина, участок застревания,
 рекомендация), What-if и чат диспетчера в карточке ТС. Поток телеметрии NDTP
 поднимается автоматически (сервис `replay`: исторический датасет → живой поток,
-окно 07:20–11:20, ×30). Живой стенд (без установки): https://mt-hackathon-team-entropy.cloudpub.ru/dashboard/index.html
+окно 07:20–11:20, ×30). Подача потока штатным эмулятором организаторов:
+`docker load -i ndtp-telemetry-emulator.tar`, затем `POST /api/start` с
+`unitId` из столбца `unit_id` файла `traffic.csv` (система свяжет юнит с ТС и
+расписанием; время пакетов выравнивается автоматически). Живой стенд (без
+установки): https://mt-hackathon-team-entropy.cloudpub.ru/dashboard/index.html
 
 Модули: **ml-core** (:9201 NDTP-сервер, :8100 инференс CatBoost), **backend**
 (:8000 FastAPI, API + WebSocket), **dashboard** (статика, MapLibre).

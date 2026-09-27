@@ -30,6 +30,9 @@ docker compose up --build
   docker-compose. Живой эмулятор организаторов: `docker load -i
   ИТОГОВЫЕ_ТРЕБОВАНИЯ/dataset/ndtp-telemetry-emulator.tar`, затем
   `curl -X POST http://localhost:8080/api/start -d '{"targetHost":"host.docker.internal","targetPort":9201,"units":[{"unitId":1166336,"intervalMs":5000,"autoGenerate":true,"cells":[]}]}'`
+  — **важно:** `unitId` берите из столбца `unit_id` файла `traffic.csv` — система
+  свяжет юнит с ТС и его расписанием автоматически; время пакетов эмулятора
+  (текущее) система сама выравнивает на день расписания (06.01.2026).
 - **Проверка метрик:** `python tools/stream_eval.py --split test` (MAE в потоке 42.2 с),
   `python tools/bench_latency.py` (latency инференса)
 - **Надёжность:** `docker compose stop replay` — система живёт на последних данных
@@ -45,7 +48,9 @@ docker compose up --build
    (прогноз опоздания, причина, участок застревания), What-if и чат в карточке ТС.
    Данные обновляются в реальном времени.
 3. **Подать поток** можно тремя способами: replay идёт сам; живой эмулятор
-   организаторов (см. «Запуск»); второй инстанс replay с другой скоростью/окном.
+   организаторов (см. «Запуск» — `unitId` указывайте из столбца `unit_id`
+   `traffic.csv`, время пакетов выравнивается автоматически); второй инстанс replay
+   с другой скоростью/окном.
 4. **Прогнозы и метрики:** `python tools/stream_eval.py --split test` — потоковый
    прогон по labels_test (MAE 42.2 с); `python tools/bench_latency.py` — latency
    инференса; Swagger: http://localhost:8000/docs, http://localhost:8100/docs;
