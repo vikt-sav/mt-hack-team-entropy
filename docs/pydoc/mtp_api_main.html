@@ -1,0 +1,44 @@
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="mtp.html" class="white">mtp</a>.<a href="mtp.api.html" class="white">api</a>.main</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Chackathon%5Cmoscow-transport-predict%5Csrc%5Cmtp%5Capi%5Cmain.py">c:\hackathon\moscow-transport-predict\src\mtp\api\main.py</a></td></tr></table>
+    <p><span class="code">Backend&nbsp;API&nbsp;+&nbsp;ML-core&nbsp;wiring.<br>
+&nbsp;<br>
+Modes:<br>
+&nbsp;&nbsp;--combined&nbsp;&nbsp;:&nbsp;ML-core&nbsp;runs&nbsp;in-process&nbsp;(local&nbsp;dev)<br>
+&nbsp;&nbsp;default&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;backend&nbsp;only;&nbsp;ML-core&nbsp;is&nbsp;expected&nbsp;at&nbsp;ML_URL&nbsp;(docker&nbsp;split)</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="argparse.html">argparse</a><br>
+<a href="asyncio.html">asyncio</a><br>
+</td><td class="multicolumn"><a href="contextlib.html">contextlib</a><br>
+<a href="httpx.html">httpx</a><br>
+</td><td class="multicolumn"><a href="json.html">json</a><br>
+<a href="os.html">os</a><br>
+</td><td class="multicolumn"><a href="pandas.html">pandas</a><br>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-build_backend_app"><strong>build_backend_app</strong></a>(ml_url: 'str | None') -&gt; 'FastAPI'</dt></dl>
+ <dl><dt><a name="-build_ml_app"><strong>build_ml_app</strong></a>(base_dir: 'Path | None' = None) -&gt; 'FastAPI'</dt></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>() -&gt; 'None'</dt></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>BASE</strong> = WindowsPath('C:/hackathon/moscow-transport-predict')<br>
+<strong>DASH</strong> = WindowsPath('C:/hackathon/moscow-transport-predict/dashboard')<br>
+<strong>DATA_DEFAULT</strong> = WindowsPath('C:/hackathon/moscow-transport-predict/dataset/validate')<br>
+<strong>ML_URL</strong> = 'http://ml-core:8100'<br>
+<strong>PYDOC</strong> = WindowsPath('C:/hackathon/moscow-transport-predict/docs/pydoc')<br>
+<strong>ROOT</strong> = WindowsPath('C:/hackathon/moscow-transport-predict')</td></tr></table>
