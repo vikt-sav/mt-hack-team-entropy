@@ -46,8 +46,8 @@ class NDTPServer:
 
 def nav_to_pipeline(rec: NavRecord, pipeline) -> None:
     pipeline.add_record(
-        tr_id=rec.unit_id,
-        ts=rec.ts.timestamp(),
+        tr_id=pipeline.map_tr_id(rec.unit_id),
+        ts=pipeline.align_ts(rec.ts.timestamp()),
         lat=rec.lat,
         lon=rec.lon,
         valid=rec.location_valid,

@@ -141,6 +141,9 @@ class OnlinePipeline:
         self._stop_trees: dict[int, object] = {}
         self._route_lines: dict[int, tuple] | None = None
         self._last_onroute: dict[int, tuple[float, float]] = {}
+        self._unit_map: dict[int, int] | None = None
+        self._sched_ref_ts: float | None = None
+        self._traffic_csv = Path(schedule_path).parent / "traffic.csv"
 
     def add_record(self, tr_id: int, ts: float, lat: float, lon: float, valid: bool, speed: float, heading: float, altitude: float = 0.0) -> None:
         state = self.vehicles.setdefault(tr_id, VehicleState())
@@ -150,6 +153,41 @@ class OnlinePipeline:
             state.valid += 1
         self._stream_ts = ts
         self.stats["records"] += 1
+
+    def map_tr_id(self, unit_id: int) -> int:
+        """unit_id потока → tr_id расписания (связка 1:1 из traffic.csv).
+
+        На потоке от организаторов приходят датасетные unit_id; в replay
+        unit_id уже равен tr_id — словарь возвращает его же.
+        """
+        if self._unit_map is None:
+            mapping: dict[int, int] = {}
+            try:
+                t = pd.read_csv(self._traffic_csv, usecols=["unit_id", "tr_id"])
+                t = t.dropna().astype({"unit_id": int, "tr_id": int})
+                mapping = t.groupby("unit_id")["tr_id"].agg(
+                    lambda s: int(s.value_counts().idxmax())
+                ).to_dict()
+            except Exception as exc:
+                print(f"[units] unit_id->tr_id map unavailable ({exc}); fallback to unit_id")
+            self._unit_map = mapping
+        return self._unit_map.get(int(unit_id), int(unit_id))
+
+    def align_ts(self, ts: float) -> float:
+        """Приводит время потока к суткам расписания.
+
+        Эмулятор ставит в пакеты текущее время, а расписание датасета на
+        06.01.2026 — сдвигаем поток целыми сутками к дню расписания (время
+        суток сохраняется; день недели может сместиться, его вклад в фичи
+        незначителен). Поток из самого датасета проходит без сдвига.
+        """
+        if self._sched_ref_ts is None and not self.schedule.empty:
+            self._sched_ref_ts = float(self.schedule["plan_s"].median())
+        ref = self._sched_ref_ts
+        if ref is None or not np.isfinite(ts):
+            return ts
+        k = round((ts - ref) / 86400.0)
+        return ts - k * 86400.0 if k else ts
 
     def _target_stop(self, tr_id: int, now_s: float):
         sc = self.schedule[self.schedule["tr_id"] == tr_id]
