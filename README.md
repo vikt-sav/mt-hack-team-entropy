@@ -8,12 +8,19 @@ ML-прогноз задержки за 10–15 минут до события �
 
 **Скор Data Science: 1.0 / 1.0** (MAE 40.9 с против baseline 93.4 с).
 
+> ### 🟢 Живой демо-стенд открыт прямо сейчас — жмите:
+> ### [https://mt-hackathon-team-entropy.cloudpub.ru/dashboard/index.html](https://mt-hackathon-team-entropy.cloudpub.ru/dashboard/index.html)
+> Карта маршрутов, ТС-стрелки, алерты-инциденты и What-if — в реальном времени.
+> Swagger API: [https://mt-hackathon-team-entropy.cloudpub.ru/docs](https://mt-hackathon-team-entropy.cloudpub.ru/docs)
+
 ## Запуск (Docker, одна команда)
 
 ```bash
 docker compose up --build
 ```
 
+- **Живой стенд:** https://mt-hackathon-team-entropy.cloudpub.ru/dashboard/index.html —
+  уже работает, установка не требуется;
 - **Дашборд:** http://localhost:8000/dashboard/index.html
 - **Swagger:** http://localhost:8000/docs (backend), http://localhost:8100/docs (ml-core)
 - **Поток:** сервис `replay` стартует сам — исторический датасет превращается в живой
