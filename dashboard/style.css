@@ -31,6 +31,8 @@ body.no-map #panel { width: 100%; max-width: none; border-left: none; }
 
 #panel {
   width: 380px;
+  height: calc(100vh - 27px);
+  margin-top: 27px;
   background: var(--panel);
   border-left: 1px solid #263244;
   display: flex;
@@ -291,7 +293,7 @@ footer { font-size: 11px; color: var(--muted); border-top: 1px solid #263244; pa
   right: 0;
   z-index: 1400;
   text-align: center;
-  padding: 5px 12px;
+  padding: 4px 12px;
   background: rgba(10, 15, 20, 0.82);
   border-bottom: 1px solid #263244;
   color: #cfd8e3;
