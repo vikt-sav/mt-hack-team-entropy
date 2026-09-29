@@ -9,10 +9,6 @@ GPS-мэтчинг с расписанием → **CatBoost** → онлайн-�
 Горизонт прогноза — **10–15 минут до события**: время опоздания, причина и участок маршрута
 срабатывают до сбоя, а не постфактум.
 
-- **Живой демо-стенд:** https://mt-hackathon-team-entropy.cloudpub.ru/dashboard/index.html
-- **Swagger:** https://mt-hackathon-team-entropy.cloudpub.ru/docs
-- **PyDoc:** https://mt-hackathon-team-entropy.cloudpub.ru/pydoc/index.html
-
 ## Возможности
 
 - **Приём потока NDTP** (NPL/NPH, CRC-16/Modbus, навигационная ячейка `G6CellNav00`) по TCP,

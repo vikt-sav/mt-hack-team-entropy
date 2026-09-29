@@ -4,12 +4,11 @@ WORKDIR /app
 ENV PYTHONUNBUFFERED=1
 
 RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu && \
-    pip install --no-cache-dir numpy pandas pyarrow pyyaml shapely networkx leuvenmapmatching catboost scikit-learn \
+    pip install --no-cache-dir numpy pandas pyarrow networkx leuvenmapmatching catboost \
         fastapi "uvicorn[standard]" httpx
 
-COPY pyproject.toml README.md ./
+COPY pyproject.toml README.md LICENSE ./
 COPY src ./src
-COPY config ./config
 COPY tools ./tools
 COPY dashboard ./dashboard
 COPY docs ./docs
