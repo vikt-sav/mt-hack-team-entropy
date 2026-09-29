@@ -8,18 +8,23 @@ build/
 *.egg-info/
 .DS_Store
 
-# датасет организаторов (скачивается отдельно, ~500 МБ)
+# датасеты и тяжёлые кэши (скачиваются отдельно, регенерируются tools/*)
 ИТОГОВЫЕ_ТРЕБОВАНИЯ/
 dataset/
-
-# тяжёлые кэши и промежуточные артефакты (регенерируются tools/*)
 data/raw/
 data/models/
 data/schedules/
 data/osm/roads_*.json
 data/osm/roads_*.compact.npz
 data/gt/features_*.parquet
-data/gt/submission.csv
+data/gt/submission*.csv
+
+# материалы презентации (локальные)
+*.pptx
+*.ttf
+*.otf
+data/media/
+tools/build_pitch_deck.py
 
 # локальная конфигурация окружения
 .kilo/

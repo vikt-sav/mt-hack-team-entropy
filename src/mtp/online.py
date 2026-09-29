@@ -157,7 +157,7 @@ class OnlinePipeline:
     def map_tr_id(self, unit_id: int) -> int:
         """unit_id потока → tr_id расписания (связка 1:1 из traffic.csv).
 
-        На потоке от организаторов приходят датасетные unit_id; в replay
+        Внешний поток (эмулятор бортовых терминалов) шлёт датасетные unit_id; в replay
         unit_id уже равен tr_id — словарь возвращает его же.
         """
         if self._unit_map is None:

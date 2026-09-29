@@ -1,6 +1,6 @@
 """Streaming verification: replay test traffic through the ONLINE pipeline and
-score predictions against labels_test. This is the honest reproduction of the
-platform result in streaming mode (no organizer hints at predict time)."""
+score predictions against labels_test. This is the honest streaming evaluation:
+no ground-truth hints are available at predict time."""
 import argparse
 import sys
 import time
@@ -86,7 +86,7 @@ def run(args) -> None:
     y_true, y_pred = np.array(y_true), np.array(y_pred)
     mae = float(np.mean(np.abs(y_true - y_pred))) if len(y_true) else float("nan")
     print(f"[stream-eval] split={args.split} scored points: {len(y_true)} (stop matched {matched}, mismatched skipped {mismatched})")
-    print(f"[stream-eval] STREAMING MAE = {mae:.1f} s  (offline submission MAE = 40.9)")
+    print(f"[stream-eval] STREAMING MAE = {mae:.1f} s  (offline model MAE = 40.9)")
     print(f"[stream-eval] tick latency: mean {max_lag:.0f} ms worst; wall {elapsed:.0f} s for {len(label_ts)} ticks")
     if len(y_true):
         print(f"[stream-eval] mae_zero = {np.mean(np.abs(y_true)):.1f}")

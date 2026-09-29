@@ -1,0 +1,76 @@
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="mtp.html" class="white">mtp</a>.osm</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Chackathon%5Cmoscow-transport-predict%5Csrc%5Cmtp%5Cosm.py">c:\hackathon\moscow-transport-predict\src\mtp\osm.py</a></td></tr></table>
+    <p><span class="code">OpenStreetMap&nbsp;road-graph&nbsp;builder&nbsp;via&nbsp;Overpass&nbsp;API&nbsp;(Stage&nbsp;1&nbsp;map&nbsp;matching).<br>
+&nbsp;<br>
+Fetches&nbsp;drivable&nbsp;roads&nbsp;for&nbsp;a&nbsp;bbox,&nbsp;builds&nbsp;an&nbsp;undirected&nbsp;graph&nbsp;of&nbsp;OSM&nbsp;nodes,<br>
+and&nbsp;computes&nbsp;street-following&nbsp;polylines&nbsp;between&nbsp;stops.&nbsp;Cached&nbsp;on&nbsp;disk;&nbsp;falls<br>
+back&nbsp;to&nbsp;straight&nbsp;lines&nbsp;if&nbsp;Overpass&nbsp;is&nbsp;unreachable.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="json.html">json</a><br>
+</td><td class="multicolumn"><a href="math.html">math</a><br>
+</td><td class="multicolumn"><a href="numpy.html">numpy</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="mtp.osm.html#RoadRouter">RoadRouter</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="RoadRouter">class <strong>RoadRouter</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#RoadRouter">RoadRouter</a>(overpass_data:&nbsp;'dict')<br>
+&nbsp;<br>
+Nearest-node&nbsp;lookup&nbsp;+&nbsp;shortest&nbsp;paths&nbsp;over&nbsp;the&nbsp;OSM&nbsp;road&nbsp;graph.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="RoadRouter-__init__"><strong>__init__</strong></a>(self, overpass_data: 'dict')</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="RoadRouter-nearest_node"><strong>nearest_node</strong></a>(self, lat: 'float', lon: 'float')</dt></dl>
+
+<dl><dt><a name="RoadRouter-route_between"><strong>route_between</strong></a>(self, lat1: 'float', lon1: 'float', lat2: 'float', lon2: 'float') -&gt; 'list[tuple[float, float]] | None'</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-build_graph"><strong>build_graph</strong></a>(overpass_data: 'dict')</dt></dl>
+ <dl><dt><a name="-fetch_roads"><strong>fetch_roads</strong></a>(bbox: 'tuple', cache_path: 'Path', depth: 'int' = 0) -&gt; 'dict'</dt></dl>
+ <dl><dt><a name="-haversine_m"><strong>haversine_m</strong></a>(lat1, lon1, lat2, lon2) -&gt; 'float'</dt></dl>
+ <dl><dt><a name="-overpass_query"><strong>overpass_query</strong></a>(bbox) -&gt; 'str'</dt></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>HIGHWAY_RE</strong> = '^(motorway|trunk|primary|secondary|tertiary|residential|unclassified|living_street|service)$'<br>
+<strong>OVERPASS_ENDPOINTS</strong> = ['https://overpass.openstreetmap.ru/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter', 'https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter']</td></tr></table>

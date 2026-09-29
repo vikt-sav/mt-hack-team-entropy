@@ -1,6 +1,6 @@
 """Recomputes stream-available deviation estimates for labeled points and
 produces streaming-model feature tables where cur_dev_s is our own GPS-based
-estimate (the organizer hint is unavailable in the live stream)."""
+estimate (the ground-truth delay hint is unavailable in a live stream)."""
 import sys
 from pathlib import Path
 

@@ -84,7 +84,7 @@ available&nbsp;at&nbsp;prediction&nbsp;time,&nbsp;per&nbsp;the&nbsp;anti-leak&nb
 
 <dl><dt><a name="OnlinePipeline-map_tr_id"><strong>map_tr_id</strong></a>(self, unit_id: 'int') -&gt; 'int'</dt><dd><span class="code">unit_id&nbsp;потока&nbsp;→&nbsp;tr_id&nbsp;расписания&nbsp;(связка&nbsp;1:1&nbsp;из&nbsp;traffic.csv).<br>
 &nbsp;<br>
-На&nbsp;потоке&nbsp;от&nbsp;организаторов&nbsp;приходят&nbsp;датасетные&nbsp;unit_id;&nbsp;в&nbsp;replay<br>
+Внешний&nbsp;поток&nbsp;(эмулятор&nbsp;бортовых&nbsp;терминалов)&nbsp;шлёт&nbsp;датасетные&nbsp;unit_id;&nbsp;в&nbsp;replay<br>
 unit_id&nbsp;уже&nbsp;равен&nbsp;tr_id&nbsp;—&nbsp;словарь&nbsp;возвращает&nbsp;его&nbsp;же.</span></dd></dl>
 
 <dl><dt><a name="OnlinePipeline-predict_vehicle"><strong>predict_vehicle</strong></a>(self, tr_id: 'int', now_s: 'float') -&gt; 'dict | None'</dt></dl>

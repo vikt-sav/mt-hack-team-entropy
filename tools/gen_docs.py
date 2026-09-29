@@ -1,4 +1,4 @@
-"""Generates PyDoc HTML documentation into docs/pydoc/ (criterion: generated docs)."""
+"""Generates PyDoc HTML documentation into docs/pydoc/."""
 import pydoc
 import shutil
 from pathlib import Path
@@ -14,9 +14,9 @@ MODULES = [
     "mtp.matching.hmm",
     "mtp.ndtp",
     "mtp.ndtp_server",
+    "mtp.osm",
     "mtp.api.main",
     "mtp.config",
-    "mtp.schemas",
 ]
 
 if OUT.exists():

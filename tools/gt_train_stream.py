@@ -41,7 +41,7 @@ def main() -> None:
     model.fit(Pool(Xtr, ytr, cat_features=CAT_FEATURES), eval_set=Pool(Xte, yte, cat_features=CAT_FEATURES), use_best_model=True)
     pred = model.predict(Xte)
     mae = float(np.mean(np.abs(yte - pred)))
-    print(f"[stream-train] TEST MAE = {mae:.1f} (hint-based model: 40.9)")
+    print(f"[stream-train] TEST MAE = {mae:.1f} (model with delay hint: 40.9)")
 
     out = Path("data/gt/models")
     model.save_model(str(out / "catboost_stream.cbm"))

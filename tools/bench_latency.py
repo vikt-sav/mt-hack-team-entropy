@@ -1,4 +1,4 @@
-"""Measures online inference latency (criterion 5: target < 1-2 s per vehicle stream)."""
+"""Measures online inference latency (target: well under 1-2 s per vehicle stream)."""
 import sys
 import time
 from pathlib import Path

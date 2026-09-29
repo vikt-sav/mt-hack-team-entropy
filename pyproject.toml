@@ -5,18 +5,17 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mtp"
 version = "0.1.0"
-description = "Predictor of schedule deviations for urban ground transport"
+description = "Streaming ML predictor of schedule deviations for urban transport (NDTP telemetry)"
+readme = "README.md"
+license = {text = "MIT"}
 requires-python = ">=3.12"
 dependencies = [
     "numpy>=1.26",
     "pandas>=2.1",
     "pyarrow>=14",
-    "pyyaml>=6.0",
-    "shapely>=2.0",
     "networkx>=3.2",
     "leuvenmapmatching>=1.1",
     "catboost>=1.2.3",
-    "scikit-learn>=1.4",
     "fastapi>=0.110",
     "uvicorn[standard]>=0.29",
     "httpx>=0.27",

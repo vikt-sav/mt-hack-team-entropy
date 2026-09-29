@@ -63,8 +63,7 @@ def main() -> None:
     model.fit(tr_pool, eval_set=te_pool, use_best_model=True)
     pred = model.predict(Xte)
     mae = float(np.mean(np.abs(yte - pred)))
-    score_est = max(0.0, min(1.0, (mae_zero - mae) / (mae_zero - 78.5)))
-    print(f"[train] TEST MAE={mae:.1f} (baseline cur_dev {mae_cur:.1f}, zero {mae_zero:.1f}), est. score={score_est:.2f}")
+    print(f"[train] TEST MAE={mae:.1f} (baseline cur_dev {mae_cur:.1f}, zero {mae_zero:.1f})")
 
     imp = model.get_feature_importance()
     order = np.argsort(-imp)
